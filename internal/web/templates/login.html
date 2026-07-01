@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>monitorDNS 登录</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5" style="max-width: 520px;">
+    <h3 class="mb-4">monitorDNS</h3>
+
+    {{if .Error}}
+      <div class="alert alert-danger">{{.Error}}</div>
+    {{end}}
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="post" action="/login">
+          <div class="mb-3">
+            <label class="form-label">用户名</label>
+            <input class="form-control" name="username" autocomplete="username" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">密码</label>
+            <input class="form-control" type="password" name="password" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn-primary w-100" type="submit">登录</button>
+          <div class="text-muted small mt-3">
+            首次启动会自动生成账号密码，并写入运行目录的 <code>admin_credentials.txt</code>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
