@@ -30,3 +30,6 @@
 > 4. 解析记录与变更事件会写入 SQLite，可在页面查看表格与图表统计
 > 
 ![JGD7JJTXSCS0X75RD{1Z2W4](https://user-images.githubusercontent.com/52809998/164955704-09ce9189-5cd4-4498-b3ac-0bf3ee6116eb.png)
+![JGD7JJTXSCS0X75RD{1Z2W4](https://raw.githubusercontent.com/4kercc/monitorDNS/refs/heads/main/img/2026-7-1%2016-41-33.png)
+![JGD7JJTXSCS0X75RD{1Z2W4](https://github.com/4kercc/monitorDNS/blob/main/img/2.png)
+
