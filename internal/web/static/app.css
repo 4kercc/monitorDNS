@@ -8,3 +8,11 @@
   max-height: 420px;
   overflow-y: auto;
 }
+
+/* Better table scrolling: keep header visible */
+.scroll-box thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bs-body-bg);
+  z-index: 1;
+}

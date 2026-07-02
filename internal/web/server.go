@@ -169,8 +169,12 @@ func (s *Server) handleDomainsPost(w http.ResponseWriter, r *http.Request) {
 	recordType := strings.TrimSpace(r.FormValue("record_type"))
 	intervalStr := strings.TrimSpace(r.FormValue("interval"))
 	interval, _ := strconv.Atoi(intervalStr)
-	if interval != 30 && interval != 60 && interval != 300 {
-		interval = 60
+	// allow user-defined interval: 1s ~ 86400s
+	if interval < 1 {
+		interval = 1
+	}
+	if interval > 86400 {
+		interval = 86400
 	}
 	if domain == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -274,13 +278,25 @@ func (s *Server) handleAPIDomain(w http.ResponseWriter, r *http.Request) {
 		}
 		_ = json.NewEncoder(w).Encode(st)
 	case "checks":
-		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
-		out, err := s.store.ListChecks(r.Context(), id, limit)
+		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+		pageSize, _ := strconv.Atoi(r.URL.Query().Get("page_size"))
+		items, total, err := s.store.ListChecksPage(r.Context(), id, page, pageSize)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		_ = json.NewEncoder(w).Encode(out)
+		if page <= 0 {
+			page = 1
+		}
+		if pageSize <= 0 || pageSize > 500 {
+			pageSize = 100
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"page":      page,
+			"page_size": pageSize,
+			"total":     total,
+			"items":     items,
+		})
 	case "changes":
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 		out, err := s.store.ListChanges(r.Context(), id, limit)

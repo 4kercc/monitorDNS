@@ -222,6 +222,51 @@ func (s *Store) ListChecks(ctx context.Context, domainID int64, limit int) ([]Ch
 	return out, rows.Err()
 }
 
+func (s *Store) CountChecks(ctx context.Context, domainID int64) (int, error) {
+	var cnt int
+	err := s.DB.QueryRowContext(ctx, `SELECT COUNT(*) FROM dns_checks WHERE domain_id = ?`, domainID).Scan(&cnt)
+	return cnt, err
+}
+
+func (s *Store) ListChecksPage(ctx context.Context, domainID int64, page, pageSize int) ([]Check, int, error) {
+	if pageSize <= 0 || pageSize > 500 {
+		pageSize = 100
+	}
+	if page <= 0 {
+		page = 1
+	}
+	total, err := s.CountChecks(ctx, domainID)
+	if err != nil {
+		return nil, 0, err
+	}
+	offset := (page - 1) * pageSize
+	if offset < 0 {
+		offset = 0
+	}
+
+	rows, err := s.DB.QueryContext(ctx, `
+		SELECT id, domain_id, checked_at, value, err
+		FROM dns_checks
+		WHERE domain_id = ?
+		ORDER BY checked_at DESC
+		LIMIT ? OFFSET ?
+	`, domainID, pageSize, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer rows.Close()
+
+	var out []Check
+	for rows.Next() {
+		var c Check
+		if err := rows.Scan(&c.ID, &c.DomainID, &c.CheckedAt, &c.Value, &c.Err); err != nil {
+			return nil, 0, err
+		}
+		out = append(out, c)
+	}
+	return out, total, rows.Err()
+}
+
 func (s *Store) ListChanges(ctx context.Context, domainID int64, limit int) ([]Change, error) {
 	if limit <= 0 || limit > 5000 {
 		limit = 200

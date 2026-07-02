@@ -44,12 +44,19 @@
                   </select>
                 </div>
                 <div class="col-6">
-                  <label class="form-label">检测周期</label>
-                  <select class="form-select" name="interval">
-                    <option value="30">30s</option>
-                    <option value="60" selected>1m</option>
-                    <option value="300">5m</option>
-                  </select>
+                  <label class="form-label">检测周期（秒）</label>
+                  <input class="form-control" type="number" name="interval" min="1" max="86400" value="60" list="intervalPresets">
+                  <datalist id="intervalPresets">
+                    <option value="1"></option>
+                    <option value="30"></option>
+                    <option value="60"></option>
+                    <option value="300"></option>
+                    <option value="600"></option>
+                    <option value="1800"></option>
+                    <option value="3600"></option>
+                    <option value="86400"></option>
+                  </datalist>
+                  <div class="form-text">范围：1 秒 ~ 86400 秒（1 天），可直接输入。</div>
                 </div>
               </div>
               <button class="btn btn-primary" type="submit">保存</button>
