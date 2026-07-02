@@ -16,8 +16,11 @@
 > 监控 CNAME：
 > monitorDNS.exe -d www.baidu.com -t CNAME -i 30 -p
 >
-> Web 模式：
+> Web 模式（本地访问）：
 > monitorDNS.exe -web -addr 127.0.0.1:8080 -db monitorDNS.db
+> 
+> Web 模式（公网访问）：
+> monitorDNS.exe -web -addr 0.0.0.0:8080 -db monitorDNS.db
 > 
 > 默认会在运行目录生成一个log.txt文件, 输出域名的解析变化
 >
@@ -28,3 +31,6 @@
 > 4. 解析记录与变更事件会写入 SQLite，可在页面查看表格与图表统计
 > 
 ![JGD7JJTXSCS0X75RD{1Z2W4](https://user-images.githubusercontent.com/52809998/164955704-09ce9189-5cd4-4498-b3ac-0bf3ee6116eb.png)
+![JGD7JJTXSCS0X75RD{1Z2W4](https://raw.githubusercontent.com/4kercc/monitorDNS/refs/heads/main/img/2026-7-1%2016-41-33.png)
+![JGD7JJTXSCS0X75RD{1Z2W4](https://raw.githubusercontent.com/4kercc/monitorDNS/refs/heads/main/img/2.png)
+
