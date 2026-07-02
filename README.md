@@ -18,6 +18,7 @@
 >
 > Web 模式（本地访问）：
 > monitorDNS.exe -web -addr 127.0.0.1:8080 -db monitorDNS.db
+> 
 > Web 模式（公网访问）：
 > monitorDNS.exe -web -addr 0.0.0.0:8080 -db monitorDNS.db
 > 
